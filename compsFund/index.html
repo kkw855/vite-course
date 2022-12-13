@@ -19,8 +19,8 @@
       </div>
     </div>
 
-    <script type="text/x-template" id="plan-template">
-      <div class="plan">
+    <script type="text/x-template" id="plan-picker-item-template">
+      <div class="plan" :class="{'active-plan': selected}" @click="select">
         <div class="description">
               <span class="title">
                 {{name}}
@@ -31,31 +31,43 @@
 
     <script type="text/x-template" id="plan-picker-template">
       <div class="plans">
-        <plan v-for="plan in plans" :name="plan"></plan>
+        <plan-picker-item v-on:select="selectPlan" v-for="plan in plans" :name="plan" :selected="selectedPlan === plan"></plan-picker-item>
       </div>
     </script>
 
     <script src="https://unpkg.com/vue@3"></script>
     <script>
-      const PlanComponent = {
-        template: '#plan-template',
+      const PlanPickerItemComponent = {
+        template: '#plan-picker-item-template',
         props: {
-          name: {type: String, required: true}
+          name: {type: String, required: true},
+          selected: {type: Boolean, default: false}
+        },
+        methods: {
+          select() {
+            this.$emit('select', this.name)
+          }
         }
       }
 
       const PlanPickerComponent = {
-        components: { plan: PlanComponent },
+        components: { 'plan-picker-item': PlanPickerItemComponent },
         template: '#plan-picker-template',
         data() {
           return {
-            plans: ['The Single', 'The Curious', 'The Addict']
+            plans: ['The Single', 'The Curious', 'The Addict'],
+            selectedPlan: null
+          }
+        },
+        methods: {
+          selectPlan(plan) {
+            this.selectedPlan = plan
           }
         }
       }
 
       Vue.createApp({
-        components: { PlanPicker: PlanPickerComponent }
+        components: { 'plan-picker': PlanPickerComponent }
       })
         .mount('#app')
     </script>
