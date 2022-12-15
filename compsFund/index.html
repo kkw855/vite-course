@@ -31,7 +31,7 @@
 
     <script type="text/x-template" id="plan-picker-template">
       <div class="plans">
-        <plan-picker-item v-on:select="selectPlan" v-for="plan in plans" :name="plan" :selected="selectedPlan === plan"></plan-picker-item>
+        <plan-picker-item @select="selectPlan" v-for="plan in plans" :name="plan" :selected="selectedPlan === plan"></plan-picker-item>
       </div>
     </script>
 
